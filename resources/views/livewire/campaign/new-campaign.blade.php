@@ -108,6 +108,24 @@
                                 autocomplete="off" wire:click="$set('from_email', 'sales@app.rumahaplikasi.co.id')">
                             <label class="btn btn-outline-danger"
                                 for="sales@app.rumahaplikasi.co.id">sales@app.rumahaplikasi.co.id</label>
+
+                            <input type="radio" class="btn-check" name="from_email"
+                                id="no-reply@marketing.psikotesdaring.com" autocomplete="off"
+                                wire:click="$set('from_email', 'no-reply@marketing.psikotesdaring.com')">
+                            <label class="btn btn-outline-danger"
+                                for="no-reply@marketing.psikotesdaring.com">no-reply@marketing.psikotesdaring.com</label>
+
+                            <input type="radio" class="btn-check" name="from_email"
+                                id="no-reply@info.psikotesdaring.com" autocomplete="off"
+                                wire:click="$set('from_email', 'no-reply@info.psikotesdaring.com')">
+                            <label class="btn btn-outline-danger"
+                                for="no-reply@info.psikotesdaring.com">no-reply@info.psikotesdaring.com</label>
+
+                            <input type="radio" class="btn-check" name="from_email"
+                                id="no-reply@ads.psikotesdaring.com" autocomplete="off"
+                                wire:click="$set('from_email', 'no-reply@ads.psikotesdaring.com')">
+                            <label class="btn btn-outline-danger"
+                                for="no-reply@ads.psikotesdaring.com">no-reply@ads.psikotesdaring.com</label>
                         </div>
 
                         @error('from_email')
@@ -122,8 +140,9 @@
 
                         <div class="btn-group-horizontal btn-group-sm" role="group">
                             @foreach ($templates as $template)
-                                <input type="radio" class="btn-check" name="template" id="template{{ $template->id }}"
-                                    autocomplete="off" wire:click="$set('template_id', {{ $template->id }})">
+                                <input type="radio" class="btn-check" name="template"
+                                    id="template{{ $template->id }}" autocomplete="off"
+                                    wire:click="$set('template_id', {{ $template->id }})">
                                 <label class="btn btn-outline-danger"
                                     for="template{{ $template->id }}">{{ $template->title }}</label>
                             @endforeach

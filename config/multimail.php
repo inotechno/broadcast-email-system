@@ -22,6 +22,21 @@ return [
             'username'      => env('MAIL_APP_USERNAME'),
             'from_name'     => 'Rumah Aplikasi',
         ],
+        'no-reply@marketing.psikotesdaring.com'  => [
+            'pass'          => env('MAIL_MARKETING_PASSWORD'),
+            'username'      => env('MAIL_MARKETING_USERNAME'),
+            'from_name'     => 'Psikotes Daring',
+        ],
+        'no-reply@ads.psikotesdaring.com'  => [
+            'pass'          => env('MAIL_ADS_PSIKOTES_PASSWORD'),
+            'username'      => env('MAIL_ADS_PSIKOTES_USERNAME'),
+            'from_name'     => 'Psikotes Daring',
+        ],
+        'no-reply@info.psikotesdaring.com'  => [
+            'pass'          => env('MAIL_INFO_PASSWORD'),
+            'username'      => env('MAIL_INFO_USERNAME'),
+            'from_name'     => 'Psikotes Daring',
+        ],
     ],
 
     'provider' => [

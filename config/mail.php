@@ -67,6 +67,39 @@ return [
             'auth_mode' => null,
         ],
 
+        'ads_psikotes' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+            'port' => env('MAIL_PORT', 587),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'username' => env('MAIL_ADS_PSIKOTES_USERNAME'),
+            'password' => env('MAIL_ADS_PSIKOTES_PASSWORD'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
+
+        'marketing' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+            'port' => env('MAIL_PORT', 587),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'username' => env('MAIL_MARKETING_USERNAME'),
+            'password' => env('MAIL_MARKETING_PASSWORD'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
+
+        'info' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+            'port' => env('MAIL_PORT', 587),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'username' => env('MAIL_INFO_USERNAME'),
+            'password' => env('MAIL_INFO_PASSWORD'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
+
         'ses' => [
             'transport' => 'ses',
         ],

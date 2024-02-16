@@ -186,7 +186,7 @@ class NewCampaign extends Component
             }
 
             $this->alert('success', 'Campaign Saved Draft Successfully');
-            return redirect()->route('campaign.create');
+            return redirect()->route('campaigns');
         } catch (\Throwable $th) {
             $this->alert('error', $th->getMessage());
         }
@@ -254,7 +254,7 @@ class NewCampaign extends Component
             $campaign->categories()->sync($this->category_id);
 
             $this->alert('success', 'Campaign Active Successfully');
-            return redirect()->route('campaign.create');
+            return redirect()->route('campaigns');
         } catch (\Throwable $th) {
             $this->alert('error', $th->getMessage());
         }
