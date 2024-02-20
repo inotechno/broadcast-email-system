@@ -39,6 +39,13 @@ class SavedEmailJob implements ShouldQueue
      */
     public function handle()
     {
+        // Validasi email sebelum melakukan operasi lainnya
+        if (!filter_var($this->data['email'], FILTER_VALIDATE_EMAIL)) {
+            // Email tidak valid, mungkin log atau lakukan tindakan sesuai kebutuhan Anda
+            \Log::error('Invalid email address: ' . $this->data['email']);
+            return; // Stop eksekusi jika email tidak valid
+        }
+
         $existingEmail = Subscriber::where('email', $this->data['email'])->first();
         // dd($existingEmail);
         if ($existingEmail) {
