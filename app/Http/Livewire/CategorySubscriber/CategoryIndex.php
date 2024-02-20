@@ -150,15 +150,23 @@ class CategoryIndex extends Component
 
     public function render()
     {
-        $categories = CategorySubscriber::with('subscribers')
-            ->when($this->search, function ($builder) {
-                $builder->where(function ($builder) {
-                    $builder->where('name', 'like', '%' . $this->search . '%');
-                    $builder->orWhere('description', 'like', '%' . $this->search . '%');
-                });
-            })->orderBy('name', 'ASC');
+        $categories = CategorySubscriber::when($this->search, function ($builder) {
+            $builder->where(function ($builder) {
+                $builder->where('name', 'like', '%' . $this->search . '%');
+                $builder->orWhere('description', 'like', '%' . $this->search . '%');
+            });
+        })->orderBy('name', 'ASC');
 
         $categories = $categories->paginate(16);
+
+        foreach ($categories as $category) {
+            // Panggil lazy loading untuk mendapatkan koleksi subscribers
+            $subscribers = $category->subscribers;
+
+            // Hitung jumlah subscribers dan simpan di property 'subscriber_count'
+            $category->subscriber_count = $subscribers->count();
+        }
+
         // dd($categories);
         return view('livewire.category-subscriber.category-index', compact('categories'))->layout('layouts.app', ['title' => 'Category Subscribers']);
     }
