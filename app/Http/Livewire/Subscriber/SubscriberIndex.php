@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Subscriber;
 
+use App\Jobs\SavedEmailJob;
 use App\Models\CategorySubscriber;
 use App\Models\Subscriber;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -87,17 +88,15 @@ class SubscriberIndex extends Component
 
         try {
             $uid = Str::random(15);
-            $subscriber = Subscriber::updateOrCreate([
-                'email' => $this->email
-            ], [
-                'uuid' => $uid,
-                'name' => $this->name,
+
+            SavedEmailJob::dispatch([
                 'email' => $this->email,
-                'phone_number' => $this->phone_number,
+                'name' => $this->name ?? null,
+                'phone_number' => $this->phone_number ?? null,
+                'categories' => $this->category_id,
                 'active' => 1
             ]);
 
-            $subscriber->categories()->sync($this->category_id);
             $this->alert('success', 'Added subscriber successfully');
             $this->resetInputFields();
         } catch (\Throwable $th) {
@@ -112,13 +111,53 @@ class SubscriberIndex extends Component
         ]);
 
         try {
-            $this->subscriber->update([
+            $subscriber = $this->subscriber;
+            $subscriber->update([
                 'name' => $this->name,
                 'email' => $this->email,
                 'phone_number' => $this->phone_number,
             ]);
 
-            $this->subscriber->categories()->sync($this->category_id);
+            $oldCategories = $subscriber->categories->pluck('id')->toArray();
+
+            // Sync the new categories
+            $syncResult = $subscriber->categories()->sync($this->category_id);
+
+            if ($syncResult['attached'] || $syncResult['detached']) {
+                // Sync operation was successful
+
+                // Get the updated categories after the sync
+                $newCategories = $subscriber->fresh()->categories->pluck('id')->toArray();
+
+                // Calculate the categories to be removed
+                $categoriesToRemove = array_diff($oldCategories, $newCategories);
+
+                // Update total for each category to be removed
+                foreach ($categoriesToRemove as $categoryId) {
+                    $category = CategorySubscriber::find($categoryId);
+                    if ($category) {
+                        $category->decrement('total');
+                    }
+                }
+
+                // Calculate the categories to be added
+                $categoriesToAdd = array_diff($newCategories, $oldCategories);
+
+                // Update total for each category to be added
+                foreach ($categoriesToAdd as $categoryId) {
+                    $category = CategorySubscriber::find($categoryId);
+                    if ($category) {
+                        $category->increment('total');
+                    }
+                }
+
+                $this->alert('success', 'Subscriber updated successfully');
+                $this->resetInputFields();
+            } else {
+                // Sync operation failed
+                $this->alert('error', 'Failed to update categories for subscriber');
+            }
+
             $this->alert('success', 'Updated subscriber successfully');
             $this->resetInputFields();
         } catch (\Throwable $th) {
@@ -141,7 +180,19 @@ class SubscriberIndex extends Component
     public function delete()
     {
         try {
-            $this->subscriber->delete();
+            $subscriber = $this->subscriber;
+
+            // Get the categories associated with the subscriber
+            $categories = $subscriber->categories;
+
+            // Delete the subscriber
+            $subscriber->delete();
+
+            // Update total for each associated category
+            foreach ($categories as $category) {
+                $category->decrement('total');
+            }
+
             $this->alert('success', 'Deleted subscriber successfully');
             $this->resetInputFields();
             $this->dispatchBrowserEvent('close-modal');

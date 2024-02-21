@@ -287,3 +287,15 @@
         </div>
     </div>
 </div>
+
+@push('plugin')
+    <script>
+        $(document).ready(function() {
+            window.addEventListener('close-modal', event => {
+                $('#modal-add-category').modal('hide');
+                $('#modal-update-category').modal('hide');
+                $('#modal-confirm-delete').modal('hide');
+            });
+        });
+    </script>
+@endpush

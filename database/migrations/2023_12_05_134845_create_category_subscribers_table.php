@@ -18,6 +18,7 @@ class CreateCategorySubscribersTable extends Migration
             $table->string('name')->unique();
             $table->string('description')->nullable();
             $table->boolean('status')->default(1);
+            $table->bigint('totat')->default(0);
             $table->timestamps();
         });
     }

@@ -303,7 +303,12 @@
             $('#select-category').off('change').on('change', function() {
                 @this.set('category_id', $(this).val());
             });
+        });
 
+        $(document).ready(function() {
+            window.addEventListener('close-modal', event => {
+                $('#modal-confirm-delete').modal('hide');
+            });
         });
     </script>
 @endpush

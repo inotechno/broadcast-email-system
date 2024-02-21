@@ -12,7 +12,8 @@ class CategorySubscriber extends Model
     protected $fillable = [
         'name',
         'description',
-        'status'
+        'status',
+        'total'
     ];
 
 
