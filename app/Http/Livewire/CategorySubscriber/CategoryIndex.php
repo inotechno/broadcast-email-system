@@ -23,16 +23,6 @@ class CategoryIndex extends Component
         'search' => ['except' => '']
     ];
 
-    // public function hydrate()
-    // {
-    //     $this->emit('afterDomUpdate');
-    // }
-
-    public function mount()
-    {
-        // $this->sites = MasterSite::all();
-    }
-
     public function updatedSearchTerm()
     {
         $this->resetPage();
@@ -71,7 +61,6 @@ class CategoryIndex extends Component
         ]);
 
         try {
-
             foreach ($this->name as $key => $value) {
                 CategorySubscriber::create(
                     [
@@ -159,13 +148,13 @@ class CategoryIndex extends Component
 
         $categories = $categories->paginate(16);
 
-        foreach ($categories as $category) {
-            // Panggil lazy loading untuk mendapatkan koleksi subscribers
-            $subscribers = $category->subscribers;
+        // foreach ($categories as $category) {
+        //     // Panggil lazy loading untuk mendapatkan koleksi subscribers
+        //     $subscribers = $category->subscribers;
 
-            // Hitung jumlah subscribers dan simpan di property 'subscriber_count'
-            $category->subscriber_count = $subscribers->count();
-        }
+        //     // Hitung jumlah subscribers dan simpan di property 'subscriber_count'
+        //     $category->subscriber_count = $subscribers->count();
+        // }
 
         // dd($categories);
         return view('livewire.category-subscriber.category-index', compact('categories'))->layout('layouts.app', ['title' => 'Category Subscribers']);
