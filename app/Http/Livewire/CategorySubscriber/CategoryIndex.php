@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\CategorySubscriber;
 
+ini_set('memory_limit', '2048M');
+
 use App\Models\CategorySubscriber;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
@@ -144,17 +146,14 @@ class CategoryIndex extends Component
                 $builder->where('name', 'like', '%' . $this->search . '%');
                 $builder->orWhere('description', 'like', '%' . $this->search . '%');
             });
-        })->orderBy('name', 'ASC');
+        })->with('subscribers')->orderBy('name', 'ASC');
 
         $categories = $categories->paginate(16);
 
-        // foreach ($categories as $category) {
-        //     // Panggil lazy loading untuk mendapatkan koleksi subscribers
-        //     $subscribers = $category->subscribers;
-
-        //     // Hitung jumlah subscribers dan simpan di property 'subscriber_count'
-        //     $category->subscriber_count = $subscribers->count();
-        // }
+        foreach ($categories as $category) {
+            $subscribers = $category->subscribers->pluck('id')->toArray();
+            $category->subscriber_count = count($subscribers);
+        }
 
         // dd($categories);
         return view('livewire.category-subscriber.category-index', compact('categories'))->layout('layouts.app', ['title' => 'Category Subscribers']);

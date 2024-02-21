@@ -71,7 +71,7 @@
                                             title="{{ $category->description }}"
                                             data-bs-toggle="tooltip">{{ $category->name }}</a>
                                     </h5>
-                                    {{-- <p class="text-muted mb-2">{{ $category->subscriber_count }} Subcsribers</p> --}}
+                                    <p class="text-muted mb-2">{{ $category->subscriber_count }} Subcsribers</p>
                                     <ul class="list-inline mb-0">
                                         <li class="list-inline-item">
                                             @if ($category->status == 1)
